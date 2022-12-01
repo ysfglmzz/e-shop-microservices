@@ -5,23 +5,26 @@ import (
 	"encoding/json"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/ysfglmzz/e-shop-microservices/identity/config"
 	"github.com/ysfglmzz/e-shop-microservices/identity/internal/app/event"
 )
 
 type RabbitMqMessageService struct {
+	cfg        config.RabbitMqConfig
 	connection *amqp.Connection
 }
 
-func NewRabbitMqMessageService() *RabbitMqMessageService {
-	mesgService := &RabbitMqMessageService{}
-	mesgService.connect().exchangeDeclare()
+func NewRabbitMqMessageService(cfg config.RabbitMqConfig, connection *amqp.Connection) *RabbitMqMessageService {
+	mesgService := &RabbitMqMessageService{cfg: cfg, connection: connection}
+	mesgService.exchangeDeclare()
 	return mesgService
 }
 
-func (r *RabbitMqMessageService) connect() *RabbitMqMessageService {
-	r.connection, _ = amqp.Dial("amqp://guest:guest@localhost:5672")
-	return r
-}
+// func (r *RabbitMqMessageService) connect() *RabbitMqMessageService {
+// 	connectionString := fmt.Sprintf(constants.RabbitMqConnectionFormat, r.cfg.User, r.cfg.Password, r.cfg.Host, r.cfg.Port)
+// 	r.connection, _ = amqp.Dial(connectionString)
+// 	return r
+// }
 
 // func (r *RabbitMqMessageService) queueDeclare() *RabbitMqMessageService {
 // 	ch, _ := r.connection.Channel()
@@ -35,7 +38,7 @@ func (r *RabbitMqMessageService) PublishUserCreatedEvent(event event.UserCreated
 	ch, _ := r.connection.Channel()
 	defer ch.Close()
 	data, _ := json.Marshal(&event)
-	err := ch.PublishWithContext(context.Background(), "UserCreated", "UserCreated", false, false, amqp.Publishing{
+	err := ch.PublishWithContext(context.Background(), r.cfg.Exchange, r.cfg.RoutingKey, false, false, amqp.Publishing{
 		ContentType: "application/json",
 		Body:        data,
 	})
@@ -45,6 +48,6 @@ func (r *RabbitMqMessageService) PublishUserCreatedEvent(event event.UserCreated
 func (r *RabbitMqMessageService) exchangeDeclare() *RabbitMqMessageService {
 	ch, _ := r.connection.Channel()
 	defer ch.Close()
-	ch.ExchangeDeclare("UserCreated", amqp.ExchangeTopic, true, false, false, false, nil)
+	ch.ExchangeDeclare(r.cfg.Exchange, amqp.ExchangeTopic, true, false, false, false, nil)
 	return r
 }

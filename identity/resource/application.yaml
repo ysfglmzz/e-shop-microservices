@@ -1,0 +1,19 @@
+system:
+  dbDriver: mysql
+  dbManager: gorm
+  host: localhost
+  port: 5001
+  messageBus: rabbitMq
+mysql:
+  database: mydb
+  port: 3306
+  host: localhost
+  user: root
+  password: 1234
+rabbitMq:
+  host: localhost
+  user: guest
+  password: guest
+  port: 5672
+  exchange: UserCreated
+  routingKey: UserCreated  
