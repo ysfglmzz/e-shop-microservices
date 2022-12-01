@@ -25,7 +25,8 @@ func NewServiceFactory(
 }
 
 func (s *ServiceFactory) GetIdentityService() usecase.IIdentityService {
-	return usecaseImp.NewIdentityService(s.GetMessageService(), s.repositoryFactory.GetIdentityRepository())
+	systemConfig := s.cfg.System
+	return usecaseImp.NewIdentityService(s.GetMessageService(), s.repositoryFactory.GetIdentityRepository(), systemConfig.TokenSecretKey, systemConfig.TokenExpirationTime)
 }
 
 func (s *ServiceFactory) GetMessageService() usecase.IMessageService {

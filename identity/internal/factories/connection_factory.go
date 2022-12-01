@@ -5,6 +5,7 @@ import (
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/ysfglmzz/e-shop-microservices/identity/config"
+	"github.com/ysfglmzz/e-shop-microservices/identity/internal/app/model"
 	"github.com/ysfglmzz/e-shop-microservices/identity/internal/infrastructure/db/mysql"
 	"github.com/ysfglmzz/e-shop-microservices/identity/pkg/constants"
 
@@ -55,5 +56,17 @@ func (c *ConnectionFactory) connectGorm() {
 	switch c.cfg.System.DbDriver {
 	case "mysql":
 		c.gormDb = mysql.GormConnect(c.cfg.Mysql)
+	}
+	c.gormDb.AutoMigrate(
+		model.User{},
+		model.Role{},
+		model.UserRole{},
+		model.TokenDetail{},
+	)
+	if c.cfg.System.InitDb {
+		c.gormDb.Create([]model.Role{
+			{Id: 1, Name: "admin"},
+			{Id: 2, Name: "customer"},
+		})
 	}
 }

@@ -1,0 +1,82 @@
+definitions:
+  dto.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+      userRoles:
+        items:
+          $ref: '#/definitions/dto.UserRole'
+        type: array
+      username:
+        type: string
+    type: object
+  dto.LoginUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.UserRole:
+    properties:
+      roleId:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Identity Service documents
+  title: Identity Service Api
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      parameters:
+      - description: LoginUserRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUserRequest'
+      responses:
+        "201":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Login
+      tags:
+      - AuthApi
+  /auth/register:
+    post:
+      parameters:
+      - description: CreateUserRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUserRequest'
+      responses:
+        "201":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: User Register
+      tags:
+      - AuthApi
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
