@@ -1,0 +1,13 @@
+system:
+  dbDriver: mysql
+  dbManager: gorm
+  host: localhost
+  port: 5002
+  server: gin
+  initdb: true
+mysql:
+  database: my_db
+  port: 3306
+  host: localhost
+  user: root
+  password: 1234

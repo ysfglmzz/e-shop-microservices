@@ -1,0 +1,76 @@
+definitions:
+  dto.CreateProductDTO:
+    properties:
+      brandId:
+        type: integer
+      categoryId:
+        type: integer
+      name:
+        type: string
+      quantity:
+        type: integer
+      subCategoryId:
+        type: integer
+      unitPrice:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Catalog Service documents
+  title: Catalog Service Api
+  version: "1.0"
+paths:
+  /products:
+    get:
+      parameters:
+      - in: query
+        name: brandId
+        type: integer
+      - in: query
+        name: categoryId
+        type: integer
+      - in: query
+        name: limit
+        required: true
+        type: integer
+      - in: query
+        name: offset
+        required: true
+        type: integer
+      - in: query
+        name: subCategoryId
+        type: integer
+      responses:
+        "201":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Product
+      tags:
+      - Product Api
+    post:
+      parameters:
+      - description: CreateProductDTO
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateProductDTO'
+      responses:
+        "201":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Crate Product
+      tags:
+      - Product Api
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
