@@ -1,0 +1,6 @@
+order:
+  orderCompleted:
+    exchange: eshop
+    exchangeType: topic
+    routingKey: orderCompleted
+    queue: catolog.orderCompleted

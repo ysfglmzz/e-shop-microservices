@@ -10,7 +10,8 @@ type IProductRepository interface {
 	UpdateProduct(product *model.Product) error
 	DeleteProductById(id int) error
 	GetProducts(productFilter dto.ProductFilter) ([]*dto.ProductResponse, error)
-	// GetProductById(id int) (*model.Product, error)
+	GetProductsByIdList(idList ...int) ([]*model.Product, error)
+	UpdateProducts(products ...*model.Product) error
 	// GetProductsByCategoryId(categoryId int) ([]*model.Product, error)
 	// GetProductsByBrandId(brandId int) ([]*model.Product, error)
 	// GetProductsBySubCategoryId(subCategoryId int) ([]*model.Product, error)

@@ -5,9 +5,15 @@ system:
   port: 5002
   server: gin
   initdb: true
+  messageBus: rabbitMq 
 mysql:
   database: my_db
   port: 3306
   host: localhost
   user: root
   password: 1234
+rabbitMq:
+  host: localhost
+  port: 5672
+  user: guest
+  password: guest

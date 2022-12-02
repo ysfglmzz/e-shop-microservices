@@ -62,3 +62,16 @@ func (g *gormProductRepository) GetProducts(productFilter dto.ProductFilter) ([]
 
 	return productResponseList, nil
 }
+
+func (g *gormProductRepository) GetProductsByIdList(idList ...int) ([]*model.Product, error) {
+	var products []*model.Product
+
+	if err := g.db.Where(idList).Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (g *gormProductRepository) UpdateProducts(products ...*model.Product) error {
+	return g.db.Save(&products).Error
+}

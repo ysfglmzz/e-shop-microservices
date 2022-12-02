@@ -10,28 +10,40 @@ func init() {
 	viper.SetConfigType(constants.ConfigType)
 }
 
-type ConfigurationManager struct {
-	appConfig AppConfig
+type configurationManager struct {
+	appConfig    AppConfig
+	queuesConfig QueuesConfig
 }
 
-func NewConfigurationManager() *ConfigurationManager {
-	return &ConfigurationManager{appConfig: readApplicationConfig()}
+func NewConfigurationManager() *configurationManager {
+	return &configurationManager{
+		appConfig:    readApplicationConfig(),
+		queuesConfig: readQueuesConfig(),
+	}
 }
 
-func (c *ConfigurationManager) GetMysqlConfig() MysqlConfig {
+func (c *configurationManager) GetMysqlConfig() MysqlConfig {
 	return c.appConfig.Mysql
 }
 
-func (c *ConfigurationManager) GetSystemConfig() SystemConfig {
+func (c *configurationManager) GetSystemConfig() SystemConfig {
 	return c.appConfig.System
 }
 
-func (c *ConfigurationManager) GetAppConfig() AppConfig {
+func (c *configurationManager) GetRabbitMqConfig() RabbitMqConfig {
+	return c.appConfig.RabbitMq
+}
+
+func (c *configurationManager) GetAppConfig() AppConfig {
 	return c.appConfig
 }
 
+func (c *configurationManager) GetQueuesConfig() QueuesConfig {
+	return c.queuesConfig
+}
+
 func readApplicationConfig() AppConfig {
-	viper.SetConfigName(constants.ConfigName)
+	viper.SetConfigName(constants.AppConfigName)
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err.Error())
 	}
@@ -40,4 +52,16 @@ func readApplicationConfig() AppConfig {
 		panic(err.Error())
 	}
 	return appConfig
+}
+
+func readQueuesConfig() QueuesConfig {
+	viper.SetConfigName(constants.QueueConfigName)
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err.Error())
+	}
+	var queuesConfig QueuesConfig
+	if err := viper.Unmarshal(&queuesConfig); err != nil {
+		panic(err.Error())
+	}
+	return queuesConfig
 }

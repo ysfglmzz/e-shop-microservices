@@ -18,10 +18,15 @@ import (
 func main() {
 	configurationManager := config.NewConfigurationManager()
 	systemConfig := configurationManager.GetSystemConfig()
+	queuesConfig := configurationManager.GetQueuesConfig()
 	appConfig := configurationManager.GetAppConfig()
-	connectionFactory := factories.NewConnectionFactory(appConfig).DbConnect()
+
+	connectionFactory := factories.NewConnectionFactory(appConfig).DbConnect().EventBusConnect()
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	serviceFactory := factories.NewServiceFactory(*repositoryFactory)
+	eventBusFactory := factories.NewEventBusFactory(systemConfig, queuesConfig, *connectionFactory, *serviceFactory)
+
+	eventBusFactory.GetEventBus().Subscribe()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory).GetApi()
 	apiFactory.Start()
 }
