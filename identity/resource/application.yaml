@@ -4,8 +4,12 @@ system:
   host: localhost
   port: 5001
   messageBus: rabbitMq
+  server: gin
+  initdb: true
+  tokenSecretKey: abc
+  tokenExpirationTime: 600 
 mysql:
-  database: mydb
+  database: my_db
   port: 3306
   host: localhost
   user: root
@@ -15,5 +19,5 @@ rabbitMq:
   user: guest
   password: guest
   port: 5672
-  exchange: UserCreated
-  routingKey: UserCreated  
+  exchange: eshop
+  routingKey: userCreated

@@ -3,15 +3,19 @@ package config
 type AppConfig struct {
 	System   SystemConfig   `yaml:"system" mapstructure:"system"`
 	Mysql    MysqlConfig    `yaml:"mysql" mapstructure:"mysql"`
-	RabbitMq RabbitMqConfig `yaml:"rabbitMq" mapstructure:"yaml"`
+	RabbitMq RabbitMqConfig `yaml:"rabbitMq" mapstructure:"rabbitMq"`
 }
 
 type SystemConfig struct {
-	Host       string `yaml:"host"`
-	Port       int    `yaml:"port"`
-	DbDriver   string `yaml:"dbDriver"`
-	DbManager  string `yaml:"dbManager"`
-	MessageBus string `yaml:"messageBus"`
+	Host                string `yaml:"host"`
+	Port                int    `yaml:"port"`
+	DbDriver            string `yaml:"dbDriver"`
+	DbManager           string `yaml:"dbManager"`
+	MessageBus          string `yaml:"messageBus"`
+	Server              string `yaml:"server"`
+	InitDb              bool   `yaml:"initDb"`
+	TokenExpirationTime int    `yaml:"tokenExpirationTime"`
+	TokenSecretKey      string `yaml:"tokenSecretKey"`
 }
 
 type MysqlConfig struct {

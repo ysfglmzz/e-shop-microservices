@@ -15,13 +15,17 @@ import (
 )
 
 type IdentityService struct {
-	messageService     usecase.IMessageService
-	idendityRepository repository.IIdentityRepository
+	tokenSecretKey      string
+	tokenExpirationTime int
+	messageService      usecase.IMessageService
+	idendityRepository  repository.IIdentityRepository
 }
 
 func NewIdentityService(
 	messageService usecase.IMessageService,
-	idendityRepository repository.IIdentityRepository) *IdentityService {
+	idendityRepository repository.IIdentityRepository,
+	tokenSecretKey string,
+	tokenExpirationTime int) *IdentityService {
 	return &IdentityService{messageService: messageService, idendityRepository: idendityRepository}
 }
 
@@ -53,7 +57,7 @@ func (i *IdentityService) LoginUser(loginUserRequest dto.LoginUserRequest) (*dto
 }
 
 func (i *IdentityService) createToken(user model.User) (*dto.TokenResponse, error) {
-	expirationTime := time.Now().Add(time.Minute * time.Duration(600))
+	expirationTime := time.Now().Add(time.Minute * time.Duration(i.tokenExpirationTime))
 	claims := jwt.MapClaims{}
 	newUUID := uuid.New()
 	roles, err := i.idendityRepository.GetUserRolesByUserId(user.Id)
@@ -66,7 +70,7 @@ func (i *IdentityService) createToken(user model.User) (*dto.TokenResponse, erro
 	claims["roles"] = roles
 
 	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := newToken.SignedString([]byte("abc"))
+	tokenString, err := newToken.SignedString([]byte(i.tokenSecretKey))
 	if err != nil {
 		return nil, err
 	}
