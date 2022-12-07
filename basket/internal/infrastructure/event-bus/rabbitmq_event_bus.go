@@ -47,10 +47,11 @@ func (r *rabbitMqEventBus) PublishBasketVerifiedEvent(basketVerifiedEvent event.
 	ch, _ := r.connection.Channel()
 	defer ch.Close()
 
-	return ch.PublishWithContext(context.Background(), queueConfig.Exchange, queueConfig.RoutingKey, false, false, amqp.Publishing{
+	err := ch.PublishWithContext(context.Background(), queueConfig.Exchange, queueConfig.RoutingKey, false, false, amqp.Publishing{
 		ContentType: "application/json",
 		Body:        body,
 	})
+	return err
 }
 
 func (r *rabbitMqEventBus) basketQueueDeclareAndBind() *rabbitMqEventBus {

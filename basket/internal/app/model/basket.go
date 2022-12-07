@@ -10,7 +10,8 @@ type Basket struct {
 }
 
 type Product struct {
-	Id       int    `bson:"id"`
-	Name     string `bson:"name"`
-	Quantity int    `bson:"quantity"`
+	Id        int    `bson:"id"`
+	Name      string `bson:"name"`
+	Quantity  int    `bson:"quantity"`
+	UnitPrice int    `bson:"unitPrice"`
 }

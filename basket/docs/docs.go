@@ -77,6 +77,36 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/baskets/{userId}/verify": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "BasketApi"
+                ],
+                "summary": "Verify Basket By User ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UserID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"msg\":\"Success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -101,6 +131,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quantity": {
+                    "type": "integer"
+                },
+                "unitPrice": {
                     "type": "integer"
                 }
             }

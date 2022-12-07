@@ -44,6 +44,14 @@ func (b *basketService) CreateBasket(basket model.Basket) error {
 	return b.basketRepository.CreateBasket(context.Background(), basket)
 }
 
-func (b *basketService) VerifyBasket(basketVerifiedEvent event.BasketVerified) error {
+func (b *basketService) VerifyBasket(userId int) error {
+	basket, err := b.GetBasketByUserId(userId)
+	if err != nil {
+		return err
+	}
+	var basketVerifiedEvent event.BasketVerified
+	if err := copier.Copy(&basketVerifiedEvent, basket); err != nil {
+		return err
+	}
 	return b.eventBus.PublishBasketVerifiedEvent(basketVerifiedEvent)
 }

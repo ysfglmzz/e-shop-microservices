@@ -6,7 +6,8 @@ type AddProductToBasketRequest struct {
 }
 
 type Product struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	Quantity int    `json:"quantity"`
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Quantity  int    `json:"quantity"`
+	UnitPrice int    `json:"unitPrice"`
 }

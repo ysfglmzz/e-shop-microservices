@@ -1,0 +1,48 @@
+info:
+  contact: {}
+  description: Order Service documents
+  title: Order Service Api
+  version: "1.0"
+paths:
+  /orders/{id}/complete:
+    put:
+      parameters:
+      - description: Order Id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Complete Order
+      tags:
+      - Order Api
+  /orders/{userId}:
+    get:
+      parameters:
+      - description: UserID
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Order By Id
+      tags:
+      - Order Api
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

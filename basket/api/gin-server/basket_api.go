@@ -65,5 +65,27 @@ func (i *basketApi) AddProductToBasket(c *gin.Context) {
 		return
 	}
 	i.logger.WithFields(logrus.Fields{"body": addProductToBasketRequest}).Info()
-	c.JSON(http.StatusOK, "Login successfully")
+	c.JSON(http.StatusOK, "added product successfully")
+}
+
+// @Tags BasketApi
+// @Security ApiKeyAuth
+// @Summary Verify Basket By User ID
+// @Param userId path string true "UserID"
+// @Success 200 string Success "{"success":true,"msg":"Success"}"
+// @Router /baskets/{userId}/verify [put]
+func (i *basketApi) VerifyBasketByUserId(c *gin.Context) {
+	userId, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		i.logger.WithError(err)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	if err := i.basketService.VerifyBasket(userId); err != nil {
+		i.logger.WithError(err)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	i.logger.Info()
+	c.JSON(http.StatusOK, "verify successfully")
 }

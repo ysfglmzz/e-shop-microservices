@@ -53,6 +53,7 @@ func (g *GinServer) generateBasketGroup() *GinServer {
 	routerGroup := g.router.Group("baskets")
 	routerGroup.GET("/:userId", basketApi.GetBasketByUserID)
 	routerGroup.POST("/addProduct", basketApi.AddProductToBasket)
+	routerGroup.PUT("/:userId/verify", basketApi.VerifyBasketByUserId)
 	return g
 }
 
