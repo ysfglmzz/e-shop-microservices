@@ -1,0 +1,66 @@
+definitions:
+  dto.AddProductToBasketRequest:
+    properties:
+      basketId:
+        type: string
+      product:
+        $ref: '#/definitions/dto.Product'
+    type: object
+  dto.Product:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Basket Service documents
+  title: Basket Service Api
+  version: "1.0"
+paths:
+  /baskets/{userId}:
+    get:
+      parameters:
+      - description: User Id
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Basket
+      tags:
+      - BasketApi
+  /baskets/addProduct:
+    post:
+      parameters:
+      - description: AddProductToBasketRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddProductToBasketRequest'
+      responses:
+        "201":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add Product To Basket
+      tags:
+      - BasketApi
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

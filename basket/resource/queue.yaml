@@ -1,0 +1,18 @@
+order:
+  orderCompleted:
+    exchange: eshop
+    exchangeType: topic
+    routingKey: orderCompleted
+    queue: basket.orderCompleted
+user:
+  userCreated:
+    exchange: eshop
+    exchangeType: topic
+    routingKey: userCreated
+    queue: basket.userCreated
+basket:
+  basketVerified:
+    exchange: eshop
+    exchangeType: topic
+    routingKey: basketVerified
+    queue: basket.basketVerified 

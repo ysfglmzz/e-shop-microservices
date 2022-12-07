@@ -1,0 +1,107 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Basket Service documents",
+        "title": "Basket Service Api",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/baskets/addProduct": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "BasketApi"
+                ],
+                "summary": "Add Product To Basket",
+                "parameters": [
+                    {
+                        "description": "AddProductToBasketRequest",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddProductToBasketRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{\"success\":true,\"msg\":\"Success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/baskets/{userId}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "BasketApi"
+                ],
+                "summary": "Get Basket",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User Id",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"msg\":\"Success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.AddProductToBasketRequest": {
+            "type": "object",
+            "properties": {
+                "basketId": {
+                    "type": "string"
+                },
+                "product": {
+                    "$ref": "#/definitions/dto.Product"
+                }
+            }
+        },
+        "dto.Product": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
