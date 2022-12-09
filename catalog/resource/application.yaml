@@ -6,6 +6,7 @@ system:
   server: gin
   initdb: true
   messageBus: rabbitMq 
+  serviceDiscovery: consul
 mysql:
   database: my_db
   port: 3306

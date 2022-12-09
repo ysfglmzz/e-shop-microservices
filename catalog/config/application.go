@@ -22,13 +22,14 @@ type QueueConfig struct {
 }
 
 type SystemConfig struct {
-	Host       string `yaml:"host"`
-	Port       int    `yaml:"port"`
-	DbDriver   string `yaml:"dbDriver"`
-	DbManager  string `yaml:"dbManager"`
-	Server     string `yaml:"server"`
-	InitDb     bool   `yaml:"initDb"`
-	MessageBus string `yaml:"messageBus"`
+	Host             string `yaml:"host"`
+	Port             int    `yaml:"port"`
+	DbDriver         string `yaml:"dbDriver"`
+	DbManager        string `yaml:"dbManager"`
+	Server           string `yaml:"server"`
+	InitDb           bool   `yaml:"initDb"`
+	MessageBus       string `yaml:"messageBus"`
+	ServiceDiscovery string `yaml:"serviceDiscovery"`
 }
 
 type MysqlConfig struct {

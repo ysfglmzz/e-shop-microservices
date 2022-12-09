@@ -8,6 +8,7 @@ system:
   initdb: true
   tokenSecretKey: abc
   tokenExpirationTime: 600 
+  serviceDiscovery: consul
 mysql:
   database: my_db
   port: 3306

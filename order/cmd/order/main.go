@@ -5,6 +5,7 @@ import (
 	"github.com/ysfglmzz/e-shop-microservices/order/config"
 	_ "github.com/ysfglmzz/e-shop-microservices/order/docs"
 	"github.com/ysfglmzz/e-shop-microservices/order/internal/factories"
+	"github.com/ysfglmzz/e-shop-microservices/order/registration"
 )
 
 // @title Order Service Api
@@ -23,6 +24,8 @@ func main() {
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	eventBusFactory := factories.NewEventBusFactory(systemConfig, queuesConfig, *connectionFactory, *repositoryFactory)
 	serviceFactory := factories.NewServiceFactory(*repositoryFactory, *eventBusFactory)
+	registationFactory := registration.NewRegistrationFactory(systemConfig)
+	registationFactory.GetRegistrationService().Register()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory)
 	eventBusFactory.GetEventBus().Subscribe()
 	apiFactory.GetApi().Start()

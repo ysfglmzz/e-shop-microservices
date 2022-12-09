@@ -4,6 +4,7 @@ system:
   port: 5003
   server: gin
   messageBus: rabbitMq 
+  serviceDiscovery: consul
 mongo:
   database: my_db
   port: 27017

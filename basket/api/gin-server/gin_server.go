@@ -2,6 +2,7 @@ package ginserver
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -50,7 +51,13 @@ func (g *GinServer) generateSwagger() *GinServer {
 
 func (g *GinServer) generateBasketGroup() *GinServer {
 	basketApi := NewBasketApi(g.serviceFactory.GetBasketService(), g.logger)
+
+	g.router.Any("/check", func(ctx *gin.Context) {
+		ctx.Writer.WriteHeader(http.StatusOK)
+	})
+
 	routerGroup := g.router.Group("baskets")
+
 	routerGroup.GET("/:userId", basketApi.GetBasketByUserID)
 	routerGroup.POST("/addProduct", basketApi.AddProductToBasket)
 	routerGroup.PUT("/:userId/verify", basketApi.VerifyBasketByUserId)

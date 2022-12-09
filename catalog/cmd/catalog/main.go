@@ -6,6 +6,7 @@ import (
 	"github.com/ysfglmzz/e-shop-microservices/catalog/api"
 	"github.com/ysfglmzz/e-shop-microservices/catalog/config"
 	"github.com/ysfglmzz/e-shop-microservices/catalog/internal/factories"
+	"github.com/ysfglmzz/e-shop-microservices/catalog/registration"
 )
 
 // @title Catalog Service Api
@@ -25,7 +26,8 @@ func main() {
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	serviceFactory := factories.NewServiceFactory(*repositoryFactory)
 	eventBusFactory := factories.NewEventBusFactory(systemConfig, queuesConfig, *connectionFactory, *serviceFactory)
-
+	registationFactory := registration.NewRegistrationFactory(systemConfig)
+	registationFactory.GetRegistrationService().Register()
 	eventBusFactory.GetEventBus().Subscribe()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory).GetApi()
 	apiFactory.Start()

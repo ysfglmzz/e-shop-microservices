@@ -32,4 +32,8 @@ services:
 host: localhost
 port: 8001
 server: gin
-
+serviceDiscovery: consul
+useServiceDiscovery: true
+consul:
+  host: localhost
+  port: 8500

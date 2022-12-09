@@ -16,6 +16,7 @@ type SystemConfig struct {
 	InitDb              bool   `yaml:"initDb"`
 	TokenExpirationTime int    `yaml:"tokenExpirationTime"`
 	TokenSecretKey      string `yaml:"tokenSecretKey"`
+	ServiceDiscovery    string `yaml:"serviceDiscovery"`
 }
 
 type MysqlConfig struct {
