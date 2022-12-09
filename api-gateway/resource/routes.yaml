@@ -1,0 +1,35 @@
+services:
+  - name: basket
+    address: http://localhost:5003
+    routes:
+      - path: /baskets/:userId
+        method: GET
+        middleware: true
+      - path: /baskets/addProduct
+        method: POST
+        middleware: true
+      - path: /baskets/:userId/verify
+        method: PUT
+        middleware: true        
+  - name: order
+    address: http://localhost:5004
+    routes:
+      - path: /orders/:userId
+        method: GET
+        middleware: true
+      - path: /orders/:id/complete
+        method: PUT
+        middleware: true  
+  - name: catalog
+    address: http://localhost:5002
+    routes:
+      - path: /products
+        method: GET
+        middleware: true
+      - path: /products
+        method: POST
+        middleware: true  
+host: localhost
+port: 8001
+server: gin
+
