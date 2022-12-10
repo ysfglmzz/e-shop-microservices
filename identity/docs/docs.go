@@ -79,6 +79,38 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/auth/verify": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "AuthApi"
+                ],
+                "summary": "Verify User",
+                "parameters": [
+                    {
+                        "description": "Verify Code",
+                        "name": "verifyCode",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerifyCodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"msg\":\"Success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -127,6 +159,14 @@ const docTemplate = `{
             "properties": {
                 "roleId": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.VerifyCodeRequest": {
+            "type": "object",
+            "properties": {
+                "verifyCode": {
+                    "type": "string"
                 }
             }
         }

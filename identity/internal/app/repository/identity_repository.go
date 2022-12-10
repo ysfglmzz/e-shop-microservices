@@ -15,4 +15,5 @@ type IIdentityRepository interface {
 	IsTokenExist(uuid uuid.UUID) bool
 	AddToken(tokenDetail *model.TokenDetail) error
 	DeleteTokenByUUID(uuid uuid.UUID) error
+	VerifyUserEmailByCode(code string) error
 }

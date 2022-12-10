@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"crypto/rand"
+	"io"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -14,7 +16,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type IdentityService struct {
+type identityService struct {
 	tokenSecretKey      string
 	tokenExpirationTime int
 	messageService      usecase.IMessageService
@@ -25,25 +27,27 @@ func NewIdentityService(
 	messageService usecase.IMessageService,
 	idendityRepository repository.IIdentityRepository,
 	tokenSecretKey string,
-	tokenExpirationTime int) *IdentityService {
-	return &IdentityService{messageService: messageService, idendityRepository: idendityRepository}
+	tokenExpirationTime int,
+) *identityService {
+	return &identityService{messageService: messageService, idendityRepository: idendityRepository}
 }
 
-func (i *IdentityService) CreateUser(createUserRequest dto.CreateUserRequest) error {
+func (i *identityService) CreateUser(createUserRequest dto.CreateUserRequest) error {
 	var userModel model.User
 	if err := copier.Copy(&userModel, createUserRequest); err != nil {
 		return err
 	}
 	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(createUserRequest.Password), bcrypt.DefaultCost)
 	userModel.PasswordHash = string(hashPassword)
+	userModel.VerificationCode = generatRandom6digits()
 	if err := i.idendityRepository.AddUser(&userModel); err != nil {
 		return err
 	}
-	event := event.UserCreated{UserId: userModel.Id, UserEmail: userModel.Email}
+	event := event.UserCreated{UserId: userModel.Id, UserEmail: userModel.Email, VerifyCode: userModel.VerificationCode}
 	return i.messageService.PublishUserCreatedEvent(event)
 }
 
-func (i *IdentityService) LoginUser(loginUserRequest dto.LoginUserRequest) (*dto.TokenResponse, error) {
+func (i *identityService) LoginUser(loginUserRequest dto.LoginUserRequest) (*dto.TokenResponse, error) {
 	userModel, err := i.idendityRepository.GetUserByEmail(loginUserRequest.Email)
 	if err != nil {
 		return nil, err
@@ -56,7 +60,11 @@ func (i *IdentityService) LoginUser(loginUserRequest dto.LoginUserRequest) (*dto
 	return i.createToken(*userModel)
 }
 
-func (i *IdentityService) createToken(user model.User) (*dto.TokenResponse, error) {
+func (i *identityService) VerifyUserByCode(code string) error {
+	return i.idendityRepository.VerifyUserEmailByCode(code)
+}
+
+func (i *identityService) createToken(user model.User) (*dto.TokenResponse, error) {
 	expirationTime := time.Now().Add(time.Minute * time.Duration(i.tokenExpirationTime))
 	claims := jwt.MapClaims{}
 	newUUID := uuid.New()
@@ -86,4 +94,18 @@ func (i *IdentityService) createToken(user model.User) (*dto.TokenResponse, erro
 		return nil, err
 	}
 	return &dto.TokenResponse{Token: tokenString, ExpirationDate: expirationTime}, nil
+}
+
+var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
+
+func generatRandom6digits() string {
+	b := make([]byte, 6)
+	n, err := io.ReadAtLeast(rand.Reader, b, 6)
+	if n != 6 {
+		panic(err)
+	}
+	for i := 0; i < len(b); i++ {
+		b[i] = table[int(b[i])%len(table)]
+	}
+	return string(b)
 }

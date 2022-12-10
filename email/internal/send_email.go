@@ -19,10 +19,10 @@ func SendEmail(cfg config.SystemConfig, userCreatedEvent event.UserCreatedEvent)
 	m.SetHeader("To", userCreatedEvent.UserEmail)
 
 	// Set E-Mail subject
-	m.SetHeader("Subject", "Gomail test subject")
+	m.SetHeader("Subject", "Eshop Subject")
 
 	// Set E-Mail body. You can set plain text or html with text/html
-	verifyInfo := fmt.Sprintf("Verify link: http://localhost:5001/user/%d", userCreatedEvent.UserId)
+	verifyInfo := fmt.Sprintf("Verify code: %s", userCreatedEvent.VerifyCode)
 	m.SetBody("text/plain", verifyInfo)
 
 	// Settings for SMTP server

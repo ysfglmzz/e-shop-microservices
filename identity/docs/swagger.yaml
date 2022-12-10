@@ -30,6 +30,11 @@ definitions:
       roleId:
         type: integer
     type: object
+  dto.VerifyCodeRequest:
+    properties:
+      verifyCode:
+        type: string
+    type: object
 info:
   contact: {}
   description: Identity Service documents
@@ -72,6 +77,25 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User Register
+      tags:
+      - AuthApi
+  /auth/verify:
+    put:
+      parameters:
+      - description: Verify Code
+        in: body
+        name: verifyCode
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyCodeRequest'
+      responses:
+        "200":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Verify User
       tags:
       - AuthApi
 securityDefinitions:

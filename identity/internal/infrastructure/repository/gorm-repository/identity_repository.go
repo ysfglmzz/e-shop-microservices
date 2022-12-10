@@ -6,27 +6,27 @@ import (
 	"gorm.io/gorm"
 )
 
-type GormIdentityRepository struct {
+type gormIdentityRepository struct {
 	db *gorm.DB
 }
 
-func NewGormIdentityRepository(db *gorm.DB) *GormIdentityRepository {
-	return &GormIdentityRepository{db: db}
+func NewGormIdentityRepository(db *gorm.DB) *gormIdentityRepository {
+	return &gormIdentityRepository{db: db}
 }
 
-func (g *GormIdentityRepository) AddUser(user *model.User) error {
+func (g *gormIdentityRepository) AddUser(user *model.User) error {
 	return g.db.Create(&user).Error
 }
 
-func (g *GormIdentityRepository) UpdateUser(user *model.User) error {
+func (g *gormIdentityRepository) UpdateUser(user *model.User) error {
 	return g.db.Save(&user).Error
 }
 
-func (g *GormIdentityRepository) DeleteUserById(id int) error {
+func (g *gormIdentityRepository) DeleteUserById(id int) error {
 	return g.db.Delete(&model.User{}, "id = ?", id).Error
 }
 
-func (g *GormIdentityRepository) GetUserById(id int) (*model.User, error) {
+func (g *gormIdentityRepository) GetUserById(id int) (*model.User, error) {
 	var user model.User
 	if err := g.db.First(&user, id).Error; err != nil {
 		return nil, err
@@ -34,22 +34,22 @@ func (g *GormIdentityRepository) GetUserById(id int) (*model.User, error) {
 	return &user, nil
 }
 
-func (g *GormIdentityRepository) IsTokenExist(uuid uuid.UUID) bool {
+func (g *gormIdentityRepository) IsTokenExist(uuid uuid.UUID) bool {
 	if err := g.db.First(&model.TokenDetail{}, "uuid = ?", uuid).Error; err != nil {
 		return false
 	}
 	return true
 }
 
-func (g *GormIdentityRepository) AddToken(tokenDetail *model.TokenDetail) error {
+func (g *gormIdentityRepository) AddToken(tokenDetail *model.TokenDetail) error {
 	return g.db.Create(&tokenDetail).Error
 }
 
-func (g *GormIdentityRepository) DeleteTokenByUUID(uuid uuid.UUID) error {
+func (g *gormIdentityRepository) DeleteTokenByUUID(uuid uuid.UUID) error {
 	return g.db.Delete(&model.TokenDetail{}, "uuid = ?", uuid).Error
 }
 
-func (g *GormIdentityRepository) GetUserRolesByUserId(id int) ([]string, error) {
+func (g *gormIdentityRepository) GetUserRolesByUserId(id int) ([]string, error) {
 	var roles []string
 
 	if err := g.db.Model(&model.User{}).
@@ -63,10 +63,14 @@ func (g *GormIdentityRepository) GetUserRolesByUserId(id int) ([]string, error) 
 	return roles, nil
 }
 
-func (g *GormIdentityRepository) GetUserByEmail(email string) (*model.User, error) {
+func (g *gormIdentityRepository) GetUserByEmail(email string) (*model.User, error) {
 	var user model.User
 	if err := g.db.First(&user, "email=?", email).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (g *gormIdentityRepository) VerifyUserEmailByCode(code string) error {
+	return g.db.Model(&model.User{}).Where("verification_code = ?", code).Update("email_verify", true).Error
 }

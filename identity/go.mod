@@ -3,11 +3,17 @@ module github.com/ysfglmzz/e-shop-microservices/identity
 go 1.19
 
 require (
+	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
+	github.com/hashicorp/consul/api v1.18.0
 	github.com/jinzhu/copier v0.3.5
 	github.com/rabbitmq/amqp091-go v1.5.0
+	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.14.0
+	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
+	github.com/swaggo/gin-swagger v1.5.3
+	github.com/swaggo/swag v1.8.1
 	golang.org/x/crypto v0.3.0
 	gorm.io/driver/mysql v1.4.4
 	gorm.io/gorm v1.24.2
@@ -21,7 +27,6 @@ require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.8.1 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
@@ -31,7 +36,6 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
-	github.com/hashicorp/consul/api v1.18.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.2.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
@@ -54,15 +58,11 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
-	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
-	github.com/swaggo/gin-swagger v1.5.3 // indirect
-	github.com/swaggo/swag v1.8.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect

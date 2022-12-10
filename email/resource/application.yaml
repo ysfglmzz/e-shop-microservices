@@ -1,6 +1,6 @@
 system:
   fromEmail: walterwhite2334@gmail.com
-  fromEmailPassword: fbmfjenhetjanwam
+  fromEmailPassword: fplgbjgxzbotogaz
   messageBus: rabbitMq
   emailHost: smtp.gmail.com
   emailPort: 587

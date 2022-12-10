@@ -65,3 +65,26 @@ func (i *IdentityApi) Login(c *gin.Context) {
 	i.logger.WithFields(logrus.Fields{"body": loginUserRequest}).Info()
 	c.JSON(http.StatusOK, map[string]any{"data": tokenResponse, "message": "Login successfully"})
 }
+
+// @Tags AuthApi
+// @Security ApiKeyAuth
+// @Summary Verify User
+// @Param verifyCode body dto.VerifyCodeRequest true "Verify Code"
+// @Success 200 string Success "{"success":true,"msg":"Success"}"
+// @Router /auth/verify [put]
+func (i *IdentityApi) VerifyUserByCode(c *gin.Context) {
+	var verifyCode dto.VerifyCodeRequest
+	if err := c.ShouldBindJSON(&verifyCode); err != nil {
+		i.logger.WithFields(logrus.Fields{"body": c.Request.Body}).WithError(err)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	err := i.identityService.VerifyUserByCode(verifyCode.VerifyCode)
+	if err != nil {
+		i.logger.WithError(err)
+		c.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	i.logger.Info()
+	c.JSON(http.StatusOK, "Verification successfully")
+}

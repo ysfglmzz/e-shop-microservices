@@ -42,12 +42,12 @@ func eventHandler(delivery <-chan amqp.Delivery, handler rabbitMqEventHandler) {
 func (r *rabbitMqEventBus) userCreatedEventHandler(delivery amqp.Delivery) {
 	var userCreatedEvent event.UserCreatedEvent
 	json.Unmarshal(delivery.Body, &userCreatedEvent)
-	go func() {
-		if err := internal.SendEmail(r.systemConfig, userCreatedEvent); err != nil {
-			return
-		}
-		delivery.Ack(false)
-	}()
+
+	if err := internal.SendEmail(r.systemConfig, userCreatedEvent); err != nil {
+		return
+	}
+	delivery.Ack(false)
+
 }
 
 func (r *rabbitMqEventBus) queueDeclare(ch *amqp.Channel, rabbitMqConfig config.RabbitMqConfig) *rabbitMqEventBus {

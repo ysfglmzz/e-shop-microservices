@@ -53,6 +53,7 @@ func (g *GinServer) generateIdentityGroup() *GinServer {
 	routerGroup := g.router.Group("auth")
 	routerGroup.POST("/register", identityApi.CreateUser)
 	routerGroup.POST("/login", identityApi.Login)
+	routerGroup.PUT("/verify", identityApi.VerifyUserByCode)
 	return g
 }
 

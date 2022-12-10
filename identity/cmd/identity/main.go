@@ -6,6 +6,7 @@ import (
 	"github.com/ysfglmzz/e-shop-microservices/identity/api"
 	"github.com/ysfglmzz/e-shop-microservices/identity/config"
 	"github.com/ysfglmzz/e-shop-microservices/identity/internal/factories"
+	"github.com/ysfglmzz/e-shop-microservices/identity/registration"
 )
 
 // @title Identity Service Api
@@ -22,6 +23,8 @@ func main() {
 	connectionFactory := factories.NewConnectionFactory(appConfig).DbConnect().MessageBusConnect()
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	serviceFactory := factories.NewServiceFactory(*connectionFactory, *repositoryFactory, appConfig)
+	registrationFactory := registration.NewRegistrationFactory(systemConfig)
+	registrationFactory.GetRegistrationService().Register()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory).GetApi()
 	apiFactory.Start()
 }
