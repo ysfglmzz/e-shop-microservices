@@ -43,6 +43,7 @@ func (g *GinServer) generateLogger() *GinServer {
 	return g
 
 }
+
 func (g *GinServer) generateSwagger() *GinServer {
 	g.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return g
@@ -54,6 +55,7 @@ func (g *GinServer) generateIdentityGroup() *GinServer {
 	routerGroup.POST("/register", identityApi.CreateUser)
 	routerGroup.POST("/login", identityApi.Login)
 	routerGroup.PUT("/verify", identityApi.VerifyUserByCode)
+	routerGroup.GET("/checkToken", identityApi.TokenControl)
 	return g
 }
 

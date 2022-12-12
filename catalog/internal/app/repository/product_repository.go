@@ -12,7 +12,4 @@ type IProductRepository interface {
 	GetProducts(productFilter dto.ProductFilter) ([]*dto.ProductResponse, error)
 	GetProductsByIdList(idList ...int) ([]*model.Product, error)
 	UpdateProducts(products ...*model.Product) error
-	// GetProductsByCategoryId(categoryId int) ([]*model.Product, error)
-	// GetProductsByBrandId(brandId int) ([]*model.Product, error)
-	// GetProductsBySubCategoryId(subCategoryId int) ([]*model.Product, error)
 }

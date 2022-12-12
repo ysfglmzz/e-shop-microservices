@@ -40,6 +40,7 @@ type SystemConfig struct {
 	InitDb           bool   `yaml:"initDb"`
 	MessageBus       string `yaml:"messageBus"`
 	ServiceDiscovery string `yaml:"serviceDiscovery"`
+	TokenSecretKey   string `yaml:"tokenSecretKey"`
 }
 
 type MongoConfig struct {

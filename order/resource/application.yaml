@@ -5,6 +5,7 @@ system:
   server: gin
   messageBus: rabbitMq 
   serviceDiscovery: consul
+  tokenSecretKey: abc
 mongo:
   database: my_db
   port: 27017

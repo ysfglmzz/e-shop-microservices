@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/ysfglmzz/e-shop-microservices/catalog/api/gin-server/middleware"
 	"github.com/ysfglmzz/e-shop-microservices/catalog/config"
 	"github.com/ysfglmzz/e-shop-microservices/catalog/internal/factories"
 )
@@ -51,7 +52,7 @@ func (g *GinServer) generateSwagger() *GinServer {
 func (g *GinServer) generateProductGroup() *GinServer {
 	productApi := NewProductApi(g.serviceFactory.GetProductService(), g.logger)
 	routerGroup := g.router.Group("products")
-	routerGroup.POST("", productApi.CreateProduct)
+	routerGroup.POST("", middleware.Authorization("admin"), productApi.CreateProduct)
 	routerGroup.GET("", productApi.GetProducts)
 	return g
 }

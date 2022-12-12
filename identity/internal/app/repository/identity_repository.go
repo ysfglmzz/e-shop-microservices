@@ -12,7 +12,7 @@ type IIdentityRepository interface {
 	GetUserById(id int) (*model.User, error)
 	GetUserByEmail(email string) (*model.User, error)
 	GetUserRolesByUserId(id int) ([]string, error)
-	IsTokenExist(uuid uuid.UUID) bool
+	CheckTokenExist(userId int) bool
 	AddToken(tokenDetail *model.TokenDetail) error
 	DeleteTokenByUUID(uuid uuid.UUID) error
 	VerifyUserEmailByCode(code string) error

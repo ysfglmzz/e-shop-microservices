@@ -25,7 +25,7 @@ services:
     routes:
       - path: /products
         method: GET
-        middleware: true
+        middleware: false
       - path: /products
         method: POST
         middleware: true  
@@ -34,13 +34,13 @@ services:
     routes:
       - path: /auth/register
         method: POST
-        middleware: true
+        middleware: false
       - path: /auth/login
         method: POST
-        middleware: true
+        middleware: false
       - path: /auth/verify
         method: PUT
-        middleware: true            
+        middleware: false    
 host: localhost
 port: 8001
 server: gin

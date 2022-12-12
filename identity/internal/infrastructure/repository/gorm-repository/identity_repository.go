@@ -34,8 +34,8 @@ func (g *gormIdentityRepository) GetUserById(id int) (*model.User, error) {
 	return &user, nil
 }
 
-func (g *gormIdentityRepository) IsTokenExist(uuid uuid.UUID) bool {
-	if err := g.db.First(&model.TokenDetail{}, "uuid = ?", uuid).Error; err != nil {
+func (g *gormIdentityRepository) CheckTokenExist(userId int) bool {
+	if err := g.db.First(&model.TokenDetail{}, "user_id = ?", userId).Error; err != nil {
 		return false
 	}
 	return true

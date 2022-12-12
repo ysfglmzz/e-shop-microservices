@@ -2,12 +2,15 @@ package ginserver
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ysfglmzz/e-shop-microservices/identity/internal/app/dto"
 	usecase "github.com/ysfglmzz/e-shop-microservices/identity/internal/app/use-case"
+	"github.com/ysfglmzz/e-shop-microservices/identity/pkg/constants"
 )
 
 type IdentityApi struct {
@@ -87,4 +90,36 @@ func (i *IdentityApi) VerifyUserByCode(c *gin.Context) {
 	}
 	i.logger.Info()
 	c.JSON(http.StatusOK, "Verification successfully")
+}
+
+// @Tags AuthApi
+// @Security ApiKeyAuth
+// @Summary Verify User
+// @Success 200 string Success "{"success":true,"msg":"Success"}"
+// @Router /auth/checkToken [get]
+func (i *IdentityApi) TokenControl(ctx *gin.Context) {
+	auth := ctx.Request.Header.Get("Authorization")
+	if auth == "" {
+		ctx.AbortWithStatusJSON(401, gin.H{"message": "Unauthorized"})
+		return
+	}
+	tokenString := strings.Split(auth, " ")[1]
+	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+		return []byte(constants.TokenSecretKey), nil
+	})
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	userId := claims["user_id"].(float64)
+	if !i.identityService.CheckTokenExist(int(userId)) {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Authorized"})
 }

@@ -51,6 +51,7 @@ func readApplicationConfig() AppConfig {
 	if err := viper.Unmarshal(&appConfig); err != nil {
 		panic(err.Error())
 	}
+	constants.TokenSecretKey = appConfig.System.TokenSecretKey
 	return appConfig
 }
 

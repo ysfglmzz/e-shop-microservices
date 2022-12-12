@@ -7,6 +7,7 @@ system:
   initdb: true
   messageBus: rabbitMq 
   serviceDiscovery: consul
+  tokenSecretKey: abc
 mysql:
   database: my_db
   port: 3306

@@ -29,7 +29,7 @@ func NewIdentityService(
 	tokenSecretKey string,
 	tokenExpirationTime int,
 ) *identityService {
-	return &identityService{messageService: messageService, idendityRepository: idendityRepository}
+	return &identityService{messageService: messageService, idendityRepository: idendityRepository, tokenSecretKey: tokenSecretKey, tokenExpirationTime: tokenExpirationTime}
 }
 
 func (i *identityService) CreateUser(createUserRequest dto.CreateUserRequest) error {
@@ -94,6 +94,10 @@ func (i *identityService) createToken(user model.User) (*dto.TokenResponse, erro
 		return nil, err
 	}
 	return &dto.TokenResponse{Token: tokenString, ExpirationDate: expirationTime}, nil
+}
+
+func (i *identityService) CheckTokenExist(userId int) bool {
+	return i.idendityRepository.CheckTokenExist(userId)
 }
 
 var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
