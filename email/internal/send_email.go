@@ -36,6 +36,5 @@ func SendEmail(cfg config.SystemConfig, userCreatedEvent event.UserCreatedEvent)
 	if err := d.DialAndSend(m); err != nil {
 		return err
 	}
-
 	return nil
 }

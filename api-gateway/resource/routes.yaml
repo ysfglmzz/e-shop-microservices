@@ -5,14 +5,14 @@ serviceDiscovery: consul
 useServiceDiscovery: true
 tokenSecretKey: abc
 consul:
-  host: localhost
+  host: consul
   port: 8500
 redis:
-  host: localhost
+  host: redis
   port: 6379
 services:
   - name: basket
-    address: http://localhost:5003
+    address: http://basket:5003
     routes:
       - path: /baskets/:userId
         method: GET
@@ -24,7 +24,7 @@ services:
         method: PUT
         middleware: true        
   - name: order
-    address: http://localhost:5004
+    address: http://order:5004
     routes:
       - path: /orders/:userId
         method: GET
@@ -33,7 +33,7 @@ services:
         method: PUT
         middleware: true  
   - name: catalog
-    address: http://localhost:5002
+    address: http://catalog:5002
     routes:
       - path: /products
         method: GET
@@ -42,7 +42,7 @@ services:
         method: POST
         middleware: true  
   - name: identity
-    address: http://localhost:5001
+    address: http://host.docker.internal:5001
     routes:
       - path: /auth/register
         method: POST

@@ -1,0 +1,150 @@
+version: '2.1'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports: 
+      - "8001:8001"
+    depends_on:
+      basket-service:
+        condition: service_started
+      identity-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+      catalog-service:
+        condition: service_started
+      consul:
+        condition: service_started
+    networks:
+      - eshop
+  basket-service:
+    build:
+      context: ./basket
+      dockerfile: Dockerfile
+    ports: 
+      - "5003:5003"
+    depends_on:
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    networks:
+      - eshop
+  identity-service:
+    hostname: host.docker.internal
+    build:
+      context: ./identity
+      dockerfile: Dockerfile
+    ports: 
+      - "5001:5001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    networks:
+      - eshop
+  order-service:
+    build:
+      context: ./order
+      dockerfile: Dockerfile
+    ports: 
+      - "5004:5004"
+    depends_on:
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    networks:
+      - eshop
+  catalog-service:
+    build:
+      context: ./catalog
+      dockerfile: Dockerfile
+    ports: 
+      - "5002:5002"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    networks:
+      - eshop
+  email-service:
+    build:
+      context: ./email
+      dockerfile: Dockerfile
+    ports: 
+      - "5005:5005"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      identity-service:
+        condition: service_started
+    networks:
+      - eshop
+  mongodb:
+    image: mongo:latest
+    hostname: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - eshop
+  mysql:
+    image: mysql:latest
+    hostname: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: my_db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u", "root", "-p1234", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - eshop
+  redis:
+    image: redis:latest
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - eshop
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+    networks:
+      - eshop
+  consul:
+    image: consul:latest
+    hostname: consul
+    ports:
+      - "8500:8500"
+    networks:
+      - eshop
+networks:
+  eshop:
+    driver: bridge
+      

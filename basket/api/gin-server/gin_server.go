@@ -66,6 +66,6 @@ func (g *GinServer) generateBasketGroup() *GinServer {
 }
 
 func (g *GinServer) listen() {
-	address := fmt.Sprintf("%s:%d", g.cfg.Host, g.cfg.Port)
+	address := fmt.Sprintf(":%d", g.cfg.Port)
 	g.router.Run(address)
 }

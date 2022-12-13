@@ -4,6 +4,7 @@ type AppConfig struct {
 	System   SystemConfig   `yaml:"system" mapstructure:"system"`
 	Mongo    MongoConfig    `yaml:"mongo" mapstructure:"mongo"`
 	RabbitMq RabbitMqConfig `yaml:"rabbitMq" mapstructure:"rabbitMq"`
+	Consul   ConsulConfig   `yaml:"consul" mapstructure:"consul"`
 }
 
 type QueuesConfig struct {
@@ -54,4 +55,9 @@ type RabbitMqConfig struct {
 	Host     string `yaml:"host"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
+}
+
+type ConsulConfig struct {
+	Port int    `yaml:"port"`
+	Host string `yaml:"host"`
 }

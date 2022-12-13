@@ -24,7 +24,7 @@ func main() {
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	eventBusFactory := factories.NewEventBusFactory(systemConfig, queuesConfig, *connectionFactory, *repositoryFactory)
 	serviceFactory := factories.NewServiceFactory(*repositoryFactory, *eventBusFactory)
-	registationFactory := registration.NewRegistrationFactory(systemConfig)
+	registationFactory := registration.NewRegistrationFactory(appConfig)
 	registationFactory.GetRegistrationService().Register()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory)
 	eventBusFactory.GetEventBus().Subscribe()

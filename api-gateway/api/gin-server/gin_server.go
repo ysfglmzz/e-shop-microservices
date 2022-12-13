@@ -50,7 +50,7 @@ func (g *ginServer) generateRouters() *ginServer {
 				address := service.Address
 				handlers := []gin.HandlerFunc{}
 				if route.Middleware {
-					handlers = append(handlers, g.TokenControlMiddleware)
+					handlers = append(handlers, g.tokenControlMiddleware)
 				}
 				switch g.routesConfig.UseServiceDiscovery {
 				case true:
@@ -72,7 +72,7 @@ func (g *ginServer) generateRouters() *ginServer {
 	return g
 }
 
-func (g *ginServer) TokenControlMiddleware(ctx *gin.Context) {
+func (g *ginServer) tokenControlMiddleware(ctx *gin.Context) {
 	// Check token status and get uuid
 	auth := ctx.Request.Header.Get("Authorization")
 	if auth == "" {
@@ -106,7 +106,7 @@ func (g *ginServer) TokenControlMiddleware(ctx *gin.Context) {
 }
 
 func (g *ginServer) checkTokenFromIdentityService(ctx *gin.Context, uuid string, tokenString string) error {
-	tokenControlAddr := "http://localhost:5001"
+	tokenControlAddr := "http://host.docker.internal:5001"
 
 	if g.routesConfig.UseServiceDiscovery {
 		tokenControlAddr = g.serviceDiscovery.GetServiceIp("identity")
@@ -127,6 +127,7 @@ func (g *ginServer) checkTokenFromIdentityService(ctx *gin.Context, uuid string,
 	if res.StatusCode != http.StatusOK {
 		return errors.New("token is not valid")
 	}
+
 	go func() {
 		g.redisClient.Set(context.Background(), uuid, tokenString, 0)
 	}()
@@ -134,6 +135,6 @@ func (g *ginServer) checkTokenFromIdentityService(ctx *gin.Context, uuid string,
 }
 
 func (g *ginServer) run() {
-	address := fmt.Sprintf("%s:%d", g.routesConfig.Host, g.routesConfig.Port)
+	address := fmt.Sprintf(":%d", g.routesConfig.Port)
 	g.router.Run(address)
 }

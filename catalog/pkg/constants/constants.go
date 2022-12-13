@@ -1,7 +1,7 @@
 package constants
 
 const (
-	ConfigPath               = "../../resource"
+	ConfigPath               = "./resource"
 	ConfigType               = "yaml"
 	AppConfigName            = "application"
 	QueueConfigName          = "queue"

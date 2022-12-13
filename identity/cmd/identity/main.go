@@ -23,7 +23,7 @@ func main() {
 	connectionFactory := factories.NewConnectionFactory(appConfig).DbConnect().MessageBusConnect()
 	repositoryFactory := factories.NewRepositoryFactory(appConfig, *connectionFactory)
 	serviceFactory := factories.NewServiceFactory(*connectionFactory, *repositoryFactory, appConfig)
-	registrationFactory := registration.NewRegistrationFactory(systemConfig)
+	registrationFactory := registration.NewRegistrationFactory(appConfig)
 	registrationFactory.GetRegistrationService().Register()
 	apiFactory := api.NewApiFactory(systemConfig, *serviceFactory).GetApi()
 	apiFactory.Start()

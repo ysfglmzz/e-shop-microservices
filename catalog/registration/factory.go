@@ -6,17 +6,17 @@ import (
 )
 
 type registrationFactory struct {
-	systemConfig config.SystemConfig
+	appConfig config.AppConfig
 }
 
-func NewRegistrationFactory(systemConfig config.SystemConfig) *registrationFactory {
-	return &registrationFactory{systemConfig: systemConfig}
+func NewRegistrationFactory(appConfig config.AppConfig) *registrationFactory {
+	return &registrationFactory{appConfig: appConfig}
 }
 
 func (r *registrationFactory) GetRegistrationService() IServiceRegistration {
-	switch r.systemConfig.ServiceDiscovery {
+	switch r.appConfig.System.ServiceDiscovery {
 	case "consul":
-		return consul.NewConsul(r.systemConfig)
+		return consul.NewConsul(r.appConfig)
 	}
 	return nil
 }

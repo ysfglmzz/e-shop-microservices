@@ -1,7 +1,7 @@
 system:
   dbDriver: mysql
   dbManager: gorm
-  host: localhost
+  host: host.docker.internal
   port: 5001
   messageBus: rabbitMq
   server: gin
@@ -12,13 +12,16 @@ system:
 mysql:
   database: my_db
   port: 3306
-  host: localhost
+  host: mysql
   user: root
   password: 1234
 rabbitMq:
-  host: localhost
+  host: rabbitmq
   user: guest
   password: guest
   port: 5672
   exchange: eshop
   routingKey: userCreated
+consul:
+  host: consul
+  port: 8500

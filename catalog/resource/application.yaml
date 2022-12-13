@@ -11,11 +11,14 @@ system:
 mysql:
   database: my_db
   port: 3306
-  host: localhost
+  host: mysql
   user: root
   password: 1234
 rabbitMq:
-  host: localhost
+  host: rabbitmq
   port: 5672
   user: guest
   password: guest
+consul:
+  host: consul
+  port: 8500

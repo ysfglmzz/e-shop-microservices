@@ -9,9 +9,12 @@ system:
 mongo:
   database: my_db
   port: 27017
-  host: localhost
+  host: mongodb
 rabbitMq:
-  host: localhost
+  host: rabbitmq
   port: 5672
   user: guest
   password: guest
+consul:
+  host: consul
+  port: 8500

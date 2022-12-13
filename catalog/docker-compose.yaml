@@ -1,0 +1,36 @@
+version: '2.1'
+
+services:
+  basket:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "5003:5003"
+    depends_on:
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_started
+  mysql:
+    image: mysql:latest
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+  consul:
+    image: consul:latest
+    hostname: consul
+    ports:
+      - "8500:8500"

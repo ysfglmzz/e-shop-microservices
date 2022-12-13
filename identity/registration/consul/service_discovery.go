@@ -1,20 +1,23 @@
 package consul
 
 import (
+	"fmt"
+
 	consulapi "github.com/hashicorp/consul/api"
 	"github.com/ysfglmzz/e-shop-microservices/identity/config"
 )
 
 type consul struct {
-	systemConfig config.SystemConfig
+	appConfig config.AppConfig
 }
 
-func NewConsul(systemConfig config.SystemConfig) *consul {
-	return &consul{systemConfig: systemConfig}
+func NewConsul(appConfig config.AppConfig) *consul {
+	return &consul{appConfig: appConfig}
 }
 
 func (c *consul) Register() {
 	config := consulapi.DefaultConfig()
+	config.Address = fmt.Sprintf("%s:%d", c.appConfig.Consul.Host, c.appConfig.Consul.Port)
 	consul, err := consulapi.NewClient(config)
 	if err != nil {
 		panic(err)
@@ -25,8 +28,8 @@ func (c *consul) Register() {
 	registration := &consulapi.AgentServiceRegistration{
 		ID:      serviceID,
 		Name:    serviceID,
-		Port:    c.systemConfig.Port,
-		Address: c.systemConfig.Host,
+		Port:    c.appConfig.System.Port,
+		Address: c.appConfig.System.Host,
 	}
 
 	if err = consul.Agent().ServiceRegister(registration); err != nil {
