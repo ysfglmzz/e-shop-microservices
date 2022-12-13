@@ -52,10 +52,11 @@ func (g *GinServer) generateSwagger() *GinServer {
 func (g *GinServer) generateIdentityGroup() *GinServer {
 	identityApi := NewIdentityApi(g.serviceFactory.GetIdentityService(), g.logger)
 	routerGroup := g.router.Group("auth")
+
 	routerGroup.POST("/register", identityApi.CreateUser)
 	routerGroup.POST("/login", identityApi.Login)
 	routerGroup.PUT("/verify", identityApi.VerifyUserByCode)
-	routerGroup.GET("/checkToken", identityApi.TokenControl)
+	routerGroup.GET("/:uuid", identityApi.TokenControl)
 	return g
 }
 

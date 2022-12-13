@@ -30,5 +30,5 @@ func (c *consul) GetServiceIp(serviceName string) string {
 	if err != nil {
 		os.Exit(1)
 	}
-	return fmt.Sprintf("http://%s:%v", agendService.Address, agendService.Port)
+	return fmt.Sprintf("%s:%v", agendService.Address, agendService.Port)
 }

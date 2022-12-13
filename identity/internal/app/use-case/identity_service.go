@@ -6,5 +6,5 @@ type IIdentityService interface {
 	CreateUser(createUserRequest dto.CreateUserRequest) error
 	LoginUser(loginUserRequest dto.LoginUserRequest) (*dto.TokenResponse, error)
 	VerifyUserByCode(code string) error
-	CheckTokenExist(userId int) bool
+	CheckTokenExist(uuid string) bool
 }

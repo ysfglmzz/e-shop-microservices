@@ -41,6 +41,24 @@ info:
   title: Identity Service Api
   version: "1.0"
 paths:
+  /auth/{uuid}:
+    get:
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"success":true,"msg":"Success"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Token Control
+      tags:
+      - AuthApi
   /auth/login:
     post:
       parameters:

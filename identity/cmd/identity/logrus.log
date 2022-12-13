@@ -35,3 +35,6 @@
 {"body":{"email":"ysfglmz.34@gmail.com","password":"1234"},"level":"info","msg":"","time":"2022-12-12T17:05:51+03:00"}
 {"body":{"email":"ysfglmz.34@gmail.com","password":"1234"},"level":"info","msg":"","time":"2022-12-12T17:08:42+03:00"}
 {"body":{"email":"ysfglmz.34@gmail.com","password":"1234"},"level":"info","msg":"","time":"2022-12-12T17:09:42+03:00"}
+{"body":{"firstName":"yusuf","lastName":"gulmez","username":"yusuf34","email":"ysfglmz.34@gmail.com","phoneNumber":"05569874512","password":"1234","userRoles":[{"roleId":2}]},"level":"info","msg":"","time":"2022-12-13T00:20:33+03:00"}
+{"level":"info","msg":"","time":"2022-12-13T00:21:02+03:00"}
+{"body":{"email":"ysfglmz.34@gmail.com","password":"1234"},"level":"info","msg":"","time":"2022-12-13T00:21:18+03:00"}

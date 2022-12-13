@@ -96,8 +96,8 @@ func (i *identityService) createToken(user model.User) (*dto.TokenResponse, erro
 	return &dto.TokenResponse{Token: tokenString, ExpirationDate: expirationTime}, nil
 }
 
-func (i *identityService) CheckTokenExist(userId int) bool {
-	return i.idendityRepository.CheckTokenExist(userId)
+func (i *identityService) CheckTokenExist(uuid string) bool {
+	return i.idendityRepository.CheckTokenExist(uuid)
 }
 
 var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
