@@ -100,9 +100,15 @@ func (r *rabbitMqEventBus) queueBindingDeclare(ch *amqp.Channel, queueConfig con
 	return r
 }
 
+func (r *rabbitMqEventBus) exchangeDeclare(ch *amqp.Channel, queueConfig config.QueueConfig) *rabbitMqEventBus {
+	ch.ExchangeDeclare(queueConfig.Exchange, queueConfig.ExchangeType, true, false, false, false, nil)
+	return r
+}
+
 func (r *rabbitMqEventBus) generateConsumers() {
 	for queueConfig, handler := range r.queueHandlerMap {
 		ch, _ := r.connection.Channel()
+		r.exchangeDeclare(ch, queueConfig)
 		r.queueDeclare(ch, queueConfig)
 		r.queueBindingDeclare(ch, queueConfig)
 		delivery, _ := ch.Consume(queueConfig.Queue, queueConfig.Queue, false, false, false, false, nil)

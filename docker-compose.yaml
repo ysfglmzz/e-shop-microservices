@@ -18,8 +18,7 @@ services:
         condition: service_started
       consul:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   basket-service:
     build:
       context: ./basket
@@ -33,8 +32,7 @@ services:
         condition: service_healthy
       consul:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   identity-service:
     hostname: host.docker.internal
     build:
@@ -49,8 +47,7 @@ services:
         condition: service_healthy
       consul:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   order-service:
     build:
       context: ./order
@@ -64,8 +61,7 @@ services:
         condition: service_healthy
       consul:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   catalog-service:
     build:
       context: ./catalog
@@ -79,8 +75,7 @@ services:
         condition: service_healthy
       consul:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   email-service:
     build:
       context: ./email
@@ -92,8 +87,7 @@ services:
         condition: service_healthy
       identity-service:
         condition: service_started
-    networks:
-      - eshop
+    restart: on-failure
   mongodb:
     image: mongo:latest
     hostname: mongodb
@@ -101,8 +95,6 @@ services:
       - "27017:27017"
     volumes:
       - ./data:/data/db
-    networks:
-      - eshop
   mysql:
     image: mysql:latest
     hostname: mysql
@@ -112,21 +104,17 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: my_db
     healthcheck:
-      test: ["CMD", "mysqladmin", "-u", "root", "-p1234", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
+      test: ["CMD", "mysqladmin", "-u", "root", "-p1234", "ping", "-h", "mysql"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
     volumes:
       - ./mysql:/var/lib/mysql
-    networks:
-      - eshop
   redis:
     image: redis:latest
     hostname: redis
     ports:
       - "6379:6379"
-    networks:
-      - eshop
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbitmq
@@ -135,16 +123,9 @@ services:
       - "15672:15672"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-    networks:
-      - eshop
   consul:
     image: consul:latest
     hostname: consul
     ports:
       - "8500:8500"
-    networks:
-      - eshop
-networks:
-  eshop:
-    driver: bridge
       
